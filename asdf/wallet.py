@@ -65,7 +65,7 @@ class Wallet:
                 {
                     "to_address": deserialized["to_address"],
                     "amount": deserialized["amount"],
-                    "fee": 0,
+                    "fee": deserialized["fee"],
                     "nonce": deserialized["nonce"],
                 }
             ).encode()

@@ -26,7 +26,7 @@ class Transaction:
         transaction_data = {
             "to_address": self.to_address,
             "amount": self.amount,
-            "fee": 0,
+            "fee": self.fee,
             "nonce": self.nonce,
         }
 
