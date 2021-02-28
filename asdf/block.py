@@ -7,7 +7,7 @@ from typing import Sequence
 class Block:
     def __init__(
         self, transactions: Sequence[bytes], message: str
-    ):
+    ) -> None:
         self.transactions = transactions
         self.message = message
         # timestamp
@@ -17,13 +17,12 @@ class Block:
         # signature
 
 
-path = os.getenv("GENESIS", "genesis.json")
+class Genesis(Block):
+    def __init__(self) -> None:
+        path = os.getenv("GENESIS", "genesis.json")
+        with open(path) as f:
+            data = json.load(f)
 
+        self.message = data["message"]
+        self.transactions = data["transactinons"]
 
-with open(path) as f:
-    data = json.load(f)
-
-GENESIS_BLOCK = Block(
-    transactions=data["transactions"],
-    message=data["message"],
-)
