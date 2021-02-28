@@ -47,6 +47,3 @@ class Transaction:
     def serialize(self) -> bytes:
         assert self.signed_transaction is not None
         return zlib.compress(json.dumps(self.signed_transaction).encode("utf-8"))
-
-
-
