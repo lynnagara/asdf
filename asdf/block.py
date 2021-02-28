@@ -17,3 +17,13 @@ class Block:
         # signature
 
 
+path = os.getenv("GENESIS", "genesis.json")
+
+
+with open(path) as f:
+    data = json.load(f)
+
+GENESIS_BLOCK = Block(
+    transactions=data["transactions"],
+    message=data["message"],
+)
