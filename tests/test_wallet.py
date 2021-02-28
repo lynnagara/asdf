@@ -13,3 +13,12 @@ def test_sign_and_verify(key_path: str) -> None:
     txn = wallet1.create_signed_transaction(wallet2_address, [], 5, 0)
 
     assert wallet2.verify_transaction(txn) is True
+
+def test_load_pem(key_path: str) -> None:
+    wallet1_key = Wallet(50, f"{key_path}/wallet1_private.pem").generate_key()
+    wallet2_key = Wallet(50, f"{key_path}/wallet2_private.pem").generate_key()
+
+    loaded_key = Wallet(50, f"{key_path}/wallet1_private.pem").load_key()
+
+    assert loaded_key == wallet1_key
+    assert loaded_key != wallet2_key
