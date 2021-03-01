@@ -1,0 +1,2 @@
+class WalletExists(Exception):
+    pass

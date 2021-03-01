@@ -4,6 +4,7 @@ from hashlib import sha3_256
 from os import path
 from typing import Any, Mapping, Optional, Tuple
 
+from asdf.errors import WalletExists
 from asdf.transaction import Transaction
 from ecdsa import SECP256k1, SigningKey, VerifyingKey  # type: ignore
 
@@ -16,7 +17,7 @@ class Wallet:
 
     def generate_key(self) -> SigningKey:
         if path.exists(self.key_path):
-            raise Exception(f"{self.key_path} already exists")
+            raise WalletExists(f"{self.key_path} already exists")
 
         self.key = SigningKey.generate(curve=SECP256k1)
         with open(self.key_path, "wb") as f:

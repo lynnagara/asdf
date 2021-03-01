@@ -1,9 +1,9 @@
 from typing import Any
 import json
-import os
 from time import time
 from typing import Sequence
 
+from asdf.settings import GENESIS_PATH
 from asdf.transaction import GenesisTransaction
 
 
@@ -30,8 +30,7 @@ class Block:
 
 class Genesis(Block):
     def __init__(self) -> None:
-        path = os.getenv("GENESIS", "genesis.json")
-        with open(path) as f:
+        with open(GENESIS_PATH) as f:
             data = json.load(f)
 
         message = data["message"]

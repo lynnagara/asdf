@@ -8,4 +8,10 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=REQUIREMENTS,
     zip_safe=False,
+    entry_points={
+        "console_scripts": [
+            "cli = asdf.cli:cli",
+        ],
+    }
+
 )
