@@ -4,6 +4,8 @@ import os
 from time import time
 from typing import Sequence
 
+from asdf.transaction import GenesisTransaction
+
 
 class Block:
     def __init__(self, transactions: Sequence[bytes], message: str) -> None:
@@ -32,9 +34,16 @@ class Genesis(Block):
         with open(path) as f:
             data = json.load(f)
 
-        self.message = data["message"]
-        self.transactions = data["transactions"]
+        message = data["message"]
+        initial_alloc = data["initial_alloc"]
+        assert isinstance(message, str)
 
-        assert isinstance(self.message, str)
-        assert isinstance(self.transactions, list)
+        transactions = []
 
+        for alloc in initial_alloc.items():
+            address = alloc[0]
+            amount = int(alloc[1])
+            transactions.append(GenesisTransaction(address, amount))
+
+        self.message = message
+        self.transactions = transactions
