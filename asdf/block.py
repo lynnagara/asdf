@@ -42,7 +42,7 @@ class Genesis(Block):
         for alloc in initial_alloc.items():
             address = alloc[0]
             amount = int(alloc[1])
-            transactions.append(GenesisTransaction(address, amount))
+            transactions.append(GenesisTransaction(address, amount).serialize())
 
         self.message = message
         self.transactions = transactions

@@ -3,10 +3,10 @@ from asdf.wallet import Wallet
 from asdf.transaction import Transaction
 
 
-def test_create_block(key_path: str) -> None:
-    sender = Wallet(50, f"{key_path}/wallet1_private.pem")
+def test_create_block(tmp_path: str) -> None:
+    sender = Wallet(50, f"{tmp_path}/wallet1_private.pem")
     sender.generate_key()
-    recipient = Wallet(50, f"{key_path}/wallet2_private.pem")
+    recipient = Wallet(50, f"{tmp_path}/wallet2_private.pem")
     recipient.generate_key()
     recipient_address = recipient.generate_address()
 
