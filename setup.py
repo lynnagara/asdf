@@ -10,7 +10,7 @@ setuptools.setup(
     zip_safe=False,
     entry_points={
         "console_scripts": [
-            "cli = asdf.cli:cli",
+            "asdf-cli = asdf.cli:cli",
         ],
     }
 
