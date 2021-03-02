@@ -11,8 +11,13 @@ SignedTransaction = Mapping[str, Any]
 
 
 class TransactionBase(ABC):
-    def __init__(self) -> None:
+    def __init__(self, to_address: str, amount: int, fee: int, nonce: int) -> None:
         self.version = 1
+        self.to_address = to_address
+        self.amount = amount
+        self.fee = fee
+        self.nonce = nonce
+        self.signed_transaction: Optional[SignedTransaction] = None
 
     def sign(self, signing_key: SigningKey) -> SignedTransaction:
         transaction_data = {
@@ -45,13 +50,8 @@ class Transaction(TransactionBase):
     def __init__(
         self, from_address: str, to_address: str, amount: int, fee: int, nonce: int = 1
     ) -> None:
-        super().__init__()
+        super().__init__(to_address, amount, fee, nonce)
         self.from_address = from_address
-        self.to_address = to_address
-        self.amount = amount
-        self.fee = fee
-        self.nonce = nonce
-        self.signed_transaction: Optional[SignedTransaction] = None
 
 
 class GenesisTransaction(TransactionBase):
@@ -60,7 +60,7 @@ class GenesisTransaction(TransactionBase):
     """
 
     def __init__(self, to_address: str, amount: int) -> None:
-        super().__init__()
+        super().__init__(to_address, amount, 0, 1)
         self.to_address = to_address
         self.amount = amount
 
