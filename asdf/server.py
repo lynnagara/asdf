@@ -1,5 +1,6 @@
 import logging
 import multiprocessing
+import signal
 import socket
 import time
 from typing import Any
@@ -12,6 +13,7 @@ logger = multiprocessing.log_to_stderr(logging.DEBUG)
 
 class Server:
     def worker(self, socket: Any) -> None:
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
         while True:
             client, address = socket.accept()
             logger.debug("{u} connected".format(u=address))
