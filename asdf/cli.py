@@ -5,8 +5,9 @@ import click
 
 
 from asdf.errors import WalletExists
-from asdf.wallet import Wallet
 from asdf.server import Server
+from asdf.validator import Validator
+from asdf.wallet import Wallet
 
 @click.group()
 def cli() -> None:
@@ -33,3 +34,7 @@ def generate_mock_data(genesis_path: str = "./genesis.json") -> None:
 def serve() -> None:
    Server().run()
 
+@cli.command()
+def run_validator() -> None:
+    validator = Validator()
+    validator.run()
