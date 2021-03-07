@@ -1,12 +1,12 @@
+import json
 import logging
 import multiprocessing
 import signal
 import socket
 import time
-from typing import Any
+from typing import Any, List
 
 from asdf import settings
-from asdf.wallet import Wallet
 
 logger = multiprocessing.log_to_stderr(logging.DEBUG)
 
@@ -16,8 +16,11 @@ class Server:
         signal.signal(signal.SIGINT, signal.SIG_IGN)
         while True:
             client, address = socket.accept()
+            self.connections.append(address)
             logger.debug("{u} connected".format(u=address))
-            client.send("OK".encode())
+            connections_copy = [conn for conn in self.connections]
+            data = json.dumps(connections_copy).encode()
+            client.send(data)
             client.close()
 
     def run(self) -> None:
@@ -25,17 +28,20 @@ class Server:
         self.socket.bind((settings.SERVER_HOST, settings.SERVER_PORT))
         self.socket.listen()
 
-        processes = [
-            multiprocessing.Process(target=self.worker, args=(self.socket,))
-            for i in range(settings.MAX_CONNECTIONS)
-        ]
+        with multiprocessing.Manager() as manager:
+            self.connections = manager.list([])
 
-        for process in processes:
-            process.daemon = True
-            process.start()
+            processes = [
+                multiprocessing.Process(target=self.worker, args=(self.socket,))
+                for i in range(settings.MAX_CONNECTIONS)
+            ]
 
-        while True:
-            try:
-                time.sleep(10)
-            except:
-                break
+            for process in processes:
+                process.daemon = True
+                process.start()
+
+            while True:
+                try:
+                    time.sleep(10)
+                except:
+                    break
